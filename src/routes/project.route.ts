@@ -13,16 +13,9 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
             userId
         });
 
-        const response = {
-            status: 200,
-            data,
-            message: null
-        };
-        res.json(response);
+        res.json(data);
     } catch (e) {
-        res.json({
-            data: {error: 'error'}
-        });
+        res.json({error: 'error'});
     }
 });
 
@@ -36,16 +29,9 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
             name
         });
 
-        const response = {
-            status: 200,
-            data,
-            message: null
-        };
-        res.json(response);
+        res.json(data);
     } catch (e) {
-        res.json({
-            data: {error: 'error'}
-        });
+        res.json({error: 'error'});
     }
 });
 
@@ -59,16 +45,9 @@ router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
             id
         });
 
-        const response = {
-            status: 200,
-            data,
-            message: null
-        };
-        res.json(response);
+        res.json(data);
     } catch (e) {
-        res.json({
-            data: {error: 'error'}
-        });
+        res.json({error: 'error'});
     }
 });
 

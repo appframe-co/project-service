@@ -1,8 +1,8 @@
 import Project from '@/models/project.model'
-import { TErrorResponse, TProjectInput } from '@/types/types'
+import { TErrorResponse, TProjectInput, TProjectOutput } from '@/types/types'
 import { getNextSequence } from '@/lib/counter'
 
-export default async function CreateProject({userId, name}: TProjectInput): Promise<TErrorResponse | {id: string}> {
+export default async function CreateProject({userId, name}: TProjectInput): Promise<TErrorResponse | {project: TProjectOutput}> {
     try {
         if (!name) {
             return {error: 'invalid_request'};
@@ -15,17 +15,23 @@ export default async function CreateProject({userId, name}: TProjectInput): Prom
 
         const seq = await getNextSequence('projectId');
 
-        const newProject = await Project.create({
+        const project = await Project.create({
             userId, 
             name,
             number: seq,
             projectNumber: 1000 + seq
         });
-        if (!newProject) {
+        if (!project) {
             return {error: 'invalid_project'};
         }
 
-        return {id: newProject.id};
+        const output = {
+            id: project.id,
+            name: project.name,
+            projectNumber: project.projectNumber
+        };
+
+        return {project: output};
     } catch (error) {
         throw error;
     }
