@@ -1,6 +1,7 @@
 import Project from '@/models/project.model'
 import { TErrorResponse, TProjectInput, TProjectOutput } from '@/types/types'
 import { getNextSequence } from '@/lib/counter'
+import crypto from 'crypto'
 
 export default async function CreateProject({userId, name}: TProjectInput): Promise<TErrorResponse | {project: TProjectOutput}> {
     try {
@@ -15,11 +16,14 @@ export default async function CreateProject({userId, name}: TProjectInput): Prom
 
         const seq = await getNextSequence('projectId');
 
+        const token = 'secret_' + crypto.randomBytes(32).toString('hex');
+
         const project = await Project.create({
             userId, 
             name,
             number: seq,
-            projectNumber: 1000 + seq
+            projectNumber: 1000 + seq,
+            token
         });
         if (!project) {
             return {error: 'invalid_project'};

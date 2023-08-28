@@ -10,6 +10,10 @@ const ProjectSchema: Schema = new Schema({
   },
   number: Number,
   projectNumber: Number,
+  token: {
+    type: String,
+    required: true
+  },
   name: String,
   createdAt: {
     type: Date,
