@@ -1,9 +1,9 @@
 import Project from '@/models/project.model'
-import { TErrorResponse, TProjectInput, TProjectOutput } from '@/types/types'
+import { TErrorResponse, TProjectInput, TProject } from '@/types/types'
 import { getNextSequence } from '@/lib/counter'
 import crypto from 'crypto'
 
-export default async function CreateProject({userId, name}: TProjectInput): Promise<TErrorResponse | {project: TProjectOutput}> {
+export default async function CreateProject({userId, name}: TProjectInput): Promise<TErrorResponse | {project: TProject}> {
     try {
         if (!name) {
             return {error: 'invalid_request'};

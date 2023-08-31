@@ -27,8 +27,8 @@ export type TProjectInput = {
   name: string;
 }
 
-export type TProjectOutput = {
+export type TProject = {
   id: string;
   name: string;
-  projectNumber: number
+  projectNumber: number;
 }

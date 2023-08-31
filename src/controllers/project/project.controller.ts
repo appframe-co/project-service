@@ -1,7 +1,7 @@
 import Project from '@/models/project.model'
-import {TErrorResponse, TProjectOutput} from '@/types/types'
+import {TErrorResponse, TProject} from '@/types/types'
 
-export default async function ProjectController({userId, id}: {userId: string, id: string}): Promise<TErrorResponse | {project: TProjectOutput}> {
+export default async function ProjectController({userId, id}: {userId: string, id: string}): Promise<TErrorResponse | {project: TProject}> {
     try {
         const project = await Project.findOne({_id: id, userId});
         if (!project) {
