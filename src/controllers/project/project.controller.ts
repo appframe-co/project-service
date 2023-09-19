@@ -11,7 +11,8 @@ export default async function ProjectController({userId, id}: {userId: string, i
         const output = {
             id: project.id,
             name: project.name,
-            projectNumber: project.projectNumber
+            projectNumber: project.projectNumber,
+            plan: project.plan
         };
 
         return {project: output};

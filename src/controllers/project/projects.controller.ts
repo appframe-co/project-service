@@ -27,7 +27,8 @@ export default async function Projects(
             id: project.id,
             userId: project.userId,
             name: project.name,
-            projectNumber: project.projectNumber
+            projectNumber: project.projectNumber,
+            plan: project.plan
         }));
 
         return {projects: output};

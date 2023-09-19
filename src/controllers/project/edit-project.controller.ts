@@ -27,7 +27,8 @@ export default async function UpdateProject(
         const output = {
             id: project.id, 
             name: project.name, 
-            projectNumber: project.projectNumber
+            projectNumber: project.projectNumber,
+            plan: project.plan
         };
 
         return {project: output};

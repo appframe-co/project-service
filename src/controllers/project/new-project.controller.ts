@@ -1,5 +1,6 @@
 import Project from '@/models/project.model'
-import { TErrorResponse, TProjectInput, TProject } from '@/types/types'
+import Plan from '@/models/plan.model'
+import { TErrorResponse, TProjectInput, TProject, TPlanModel, TProjectModel } from '@/types/types'
 import { getNextSequence } from '@/lib/counter'
 import crypto from 'crypto'
 
@@ -14,16 +15,21 @@ export default async function CreateProject({userId, name}: TProjectInput): Prom
             return {error: 'invalid_request', description: 'Number of characters from 4 to 20.', property: 'name'};
         }
 
-        const seq = await getNextSequence('projectId');
+        const plan: TPlanModel|null = await Plan.findOne({default: true});
+        if (!plan) {
+            return {error: 'invalid_plan'};
+        }
 
+        const seq = await getNextSequence('projectId');
         const token = 'secret_' + crypto.randomBytes(32).toString('hex');
 
-        const project = await Project.create({
+        const project: TProjectModel = await Project.create({
             userId, 
             name,
             number: seq,
             projectNumber: 1000 + seq,
-            token
+            token,
+            plan: plan.code
         });
         if (!project) {
             return {error: 'invalid_project'};
@@ -32,7 +38,8 @@ export default async function CreateProject({userId, name}: TProjectInput): Prom
         const output = {
             id: project.id,
             name: project.name,
-            projectNumber: project.projectNumber
+            projectNumber: project.projectNumber,
+            plan: project.plan
         };
 
         return {project: output};

@@ -15,6 +15,7 @@ const ProjectSchema: Schema = new Schema({
     required: true
   },
   name: String,
+  plan: String,
   createdAt: {
     type: Date,
     default: new Date
