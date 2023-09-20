@@ -16,6 +16,8 @@ export type TProjectModel = {
   projectNumber: number;
   name: string;
   plan: string;
+  planFinishedAt: Date;
+  trialFinishedAt: Date;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -34,6 +36,8 @@ export type TProject = {
   name: string;
   projectNumber: number;
   plan: string;
+  planFinishedAt: Date;
+  trialFinishedAt: Date;
 }
 
 type TFeatureModel = {

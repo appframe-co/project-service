@@ -12,7 +12,9 @@ export default async function ProjectController({userId, id}: {userId: string, i
             id: project.id,
             name: project.name,
             projectNumber: project.projectNumber,
-            plan: project.plan
+            plan: project.plan,
+            planFinishedAt: project.planFinishedAt,
+            trialFinishedAt: project.trialFinishedAt,
         };
 
         return {project: output};

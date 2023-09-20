@@ -28,7 +28,9 @@ export default async function UpdateProject(
             id: project.id, 
             name: project.name, 
             projectNumber: project.projectNumber,
-            plan: project.plan
+            plan: project.plan,
+            planFinishedAt: project.planFinishedAt,
+            trialFinishedAt: project.trialFinishedAt,
         };
 
         return {project: output};

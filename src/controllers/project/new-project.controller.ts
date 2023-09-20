@@ -22,6 +22,7 @@ export default async function CreateProject({userId, name}: TProjectInput): Prom
 
         const seq = await getNextSequence('projectId');
         const token = 'secret_' + crypto.randomBytes(32).toString('hex');
+        const trialFinishedAt = new Date(Date.now()+3600*24*3*1000);
 
         const project: TProjectModel = await Project.create({
             userId, 
@@ -29,7 +30,8 @@ export default async function CreateProject({userId, name}: TProjectInput): Prom
             number: seq,
             projectNumber: 1000 + seq,
             token,
-            plan: plan.code
+            plan: plan.code,
+            trialFinishedAt
         });
         if (!project) {
             return {error: 'invalid_project'};
@@ -39,7 +41,9 @@ export default async function CreateProject({userId, name}: TProjectInput): Prom
             id: project.id,
             name: project.name,
             projectNumber: project.projectNumber,
-            plan: project.plan
+            plan: project.plan,
+            planFinishedAt: project.planFinishedAt,
+            trialFinishedAt: project.trialFinishedAt,
         };
 
         return {project: output};
