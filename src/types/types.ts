@@ -20,6 +20,7 @@ export type TProjectModel = {
   trialFinishedAt: Date;
   createdAt: Date;
   updatedAt: Date;
+  currencies: {code:string, primary:boolean}[];
 }
 export type TCounterModel = {
   _id: string;
@@ -29,6 +30,7 @@ export type TCounterModel = {
 export type TProjectInput = {
   userId: string;
   name: string;
+  currencies: {code:string, primary:boolean}[];
 }
 
 export type TProject = {
@@ -38,6 +40,7 @@ export type TProject = {
   plan: string;
   planFinishedAt: Date;
   trialFinishedAt: Date;
+  currencies: {code:string, primary:boolean}[];
 }
 
 type TFeatureModel = {

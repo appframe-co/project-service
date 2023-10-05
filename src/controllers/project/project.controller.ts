@@ -15,6 +15,7 @@ export default async function ProjectController({userId, id}: {userId: string, i
             plan: project.plan,
             planFinishedAt: project.planFinishedAt,
             trialFinishedAt: project.trialFinishedAt,
+            currencies: project.currencies,
         };
 
         return {project: output};

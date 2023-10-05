@@ -31,6 +31,7 @@ export default async function Projects(
             plan: project.plan,
             planFinishedAt: project.planFinishedAt,
             trialFinishedAt: project.trialFinishedAt,
+            currencies: project.currencies,
         }));
 
         return {projects: output};

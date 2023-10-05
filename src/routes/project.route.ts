@@ -30,9 +30,12 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
 
         let { name } = req.body;
 
+        const currencies = [{code: 'ILS', primary: true}];
+
         const data = await NewProjectController({
             userId,
-            name
+            name,
+            currencies
         });
 
         res.json(data);
@@ -68,7 +71,7 @@ router.put('/:id', async (req: Request, res: Response, next: NextFunction) => {
             throw new Error('UserId required');
         }
 
-        let { id, name } = req.body;
+        let { id, name, currencies } = req.body;
 
         if (id !== req.params.id) {
             throw new Error('Project ID error');
@@ -77,7 +80,8 @@ router.put('/:id', async (req: Request, res: Response, next: NextFunction) => {
         const data = await EditProjectController({
             userId,
             id,
-            name
+            name,
+            currencies
         });
 
         res.json(data);

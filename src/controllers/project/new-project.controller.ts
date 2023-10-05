@@ -4,7 +4,7 @@ import { TErrorResponse, TProjectInput, TProject, TPlanModel, TProjectModel } fr
 import { getNextSequence } from '@/lib/counter'
 import crypto from 'crypto'
 
-export default async function CreateProject({userId, name}: TProjectInput): Promise<TErrorResponse | {project: TProject}> {
+export default async function CreateProject({userId, name, currencies}: TProjectInput): Promise<TErrorResponse | {project: TProject}> {
     try {
         if (!name) {
             return {error: 'invalid_request'};
@@ -31,7 +31,8 @@ export default async function CreateProject({userId, name}: TProjectInput): Prom
             projectNumber: 1000 + seq,
             token,
             plan: plan.code,
-            trialFinishedAt
+            trialFinishedAt,
+            currencies
         });
         if (!project) {
             return {error: 'invalid_project'};
@@ -44,6 +45,7 @@ export default async function CreateProject({userId, name}: TProjectInput): Prom
             plan: project.plan,
             planFinishedAt: project.planFinishedAt,
             trialFinishedAt: project.trialFinishedAt,
+            currencies: project.currencies,
         };
 
         return {project: output};

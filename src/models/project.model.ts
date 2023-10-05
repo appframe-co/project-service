@@ -3,6 +3,16 @@ import {TProjectModel} from '@/types/types'
 
 const ObjectId = Schema.ObjectId;
 
+const CurrencySchema = new Schema({
+  code: String, 
+  primary: {
+    type: Boolean,
+    default: false
+  }
+}, { _id : false,});
+CurrencySchema.set('toObject', { virtuals: true });
+CurrencySchema.set('toJSON', { virtuals: true });
+
 const ProjectSchema: Schema = new Schema({
   userId: {
     type: ObjectId,
@@ -28,7 +38,8 @@ const ProjectSchema: Schema = new Schema({
   updatedAt: {
     type: Date,
     default: new Date
-  }
+  },
+  currencies: [CurrencySchema]
 });
 
 ProjectSchema.set('toObject', { virtuals: true });

@@ -1,9 +1,7 @@
 import Project from '@/models/project.model';
 import { TErrorResponse, TProjectInput, TProject } from '@/types/types'
 
-export default async function UpdateProject(
-    {userId, id, name}: 
-    TProjectInput&{id:string}): Promise<TErrorResponse | {project: TProject}> {
+export default async function UpdateProject({userId, id, name, currencies}: TProjectInput&{id:string}): Promise<TErrorResponse | {project: TProject}> {
     try {
         if (!id) {
             return {error: 'invalid_request'};
@@ -16,10 +14,12 @@ export default async function UpdateProject(
             }
         }
 
+        const updatedAt = new Date();
+
         const project: TProject|null  = await Project.findOneAndUpdate({
             userId, 
             _id: id
-        }, {name});
+        }, {name, currencies, updatedAt});
         if (!project) {
             return {error: 'invalid_project'};
         }
@@ -31,6 +31,7 @@ export default async function UpdateProject(
             plan: project.plan,
             planFinishedAt: project.planFinishedAt,
             trialFinishedAt: project.trialFinishedAt,
+            currencies: project.currencies,
         };
 
         return {project: output};
