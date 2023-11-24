@@ -1,9 +1,14 @@
 import Project from '@/models/project.model'
-import {TErrorResponse, TProject} from '@/types/types'
+import {TCurrency, TErrorResponse, TLanguage, TProject} from '@/types/types'
+
+type TPayload = {
+    currencies: TCurrency[];
+    languages: TLanguage[];
+}
 
 export default async function Projects(
     {userId, token}: 
-    {userId: string, token: string}): Promise<TErrorResponse | {projects: TProject[]}> {
+    {userId: string, token: string}, payload: TPayload): Promise<TErrorResponse | {projects: TProject[]}> {
     try {
         const filter: any = {};
 
@@ -18,21 +23,34 @@ export default async function Projects(
             return {error: 'invalid_request'};
         }
 
-        const projects = await Project.find(filter);
+        const projects: TProject[] = await Project.find(filter);
         if (!projects) {
             return {error: 'invalid_project'};
         }
 
-        const output = projects.map(project => ({
-            id: project.id,
-            userId: project.userId,
-            name: project.name,
-            projectNumber: project.projectNumber,
-            plan: project.plan,
-            planFinishedAt: project.planFinishedAt,
-            trialFinishedAt: project.trialFinishedAt,
-            currencies: project.currencies,
-        }));
+        const output = projects.map(project => {
+            const currencies = project.currencies.map(c => ({
+                code: c.code, primary: c.primary, 
+                name: payload.currencies.find(cur => cur.code === c.code)?.name ?? 'unknown'
+            }));
+
+            const languages = project.languages.map(l => ({
+                code: l.code, primary:l.primary, 
+                name: payload.languages.find(lang => lang.code === l.code)?.name ?? 'unknown'
+            }));
+
+            return {
+                id: project.id,
+                userId: project.userId,
+                name: project.name,
+                projectNumber: project.projectNumber,
+                plan: project.plan,
+                planFinishedAt: project.planFinishedAt,
+                trialFinishedAt: project.trialFinishedAt,
+                currencies,
+                languages,
+            };
+        });
 
         return {projects: output};
     } catch (error) {

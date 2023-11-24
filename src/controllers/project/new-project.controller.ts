@@ -1,10 +1,15 @@
 import Project from '@/models/project.model'
 import Plan from '@/models/plan.model'
-import { TErrorResponse, TProjectInput, TProject, TPlanModel, TProjectModel } from '@/types/types'
+import { TErrorResponse, TProjectInput, TProject, TPlanModel, TProjectModel, TLanguage, TCurrency } from '@/types/types'
 import { getNextSequence } from '@/lib/counter'
 import crypto from 'crypto'
 
-export default async function CreateProject({userId, name, currencies}: TProjectInput): Promise<TErrorResponse | {project: TProject}> {
+type TPayload = {
+    currencies: TCurrency[];
+    languages: TLanguage[];
+}
+
+export default async function CreateProject({userId, name, currencies, languages}: TProjectInput, payload: TPayload): Promise<TErrorResponse | {project: TProject}> {
     try {
         if (!name) {
             return {error: 'invalid_request'};
@@ -32,20 +37,33 @@ export default async function CreateProject({userId, name, currencies}: TProject
             token,
             plan: plan.code,
             trialFinishedAt,
-            currencies
+            currencies,
+            languages
         });
         if (!project) {
             return {error: 'invalid_project'};
         }
 
+        const currenciesOutput  = project.currencies.map(c => ({
+            code: c.code, primary: c.primary, 
+            name: payload.currencies.find(cur => cur.code === c.code)?.name ?? 'unknown'
+        }));
+
+        const languagesOutput = project.languages.map(l => ({
+            code: l.code, primary:l.primary, 
+            name: payload.languages.find(lang => lang.code === l.code)?.name ?? 'unknown'
+        }));
+        
         const output = {
             id: project.id,
+            userId: project.userId,
             name: project.name,
             projectNumber: project.projectNumber,
             plan: project.plan,
             planFinishedAt: project.planFinishedAt,
             trialFinishedAt: project.trialFinishedAt,
-            currencies: project.currencies,
+            currencies: currenciesOutput,
+            languages: languagesOutput,
         };
 
         return {project: output};

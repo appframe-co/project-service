@@ -9,9 +9,19 @@ const CurrencySchema = new Schema({
     type: Boolean,
     default: false
   }
-}, { _id : false,});
+}, { _id : false});
 CurrencySchema.set('toObject', { virtuals: true });
 CurrencySchema.set('toJSON', { virtuals: true });
+
+const LanguageSchema = new Schema({
+  code: String, 
+  primary: {
+    type: Boolean,
+    default: false
+  }
+}, { _id : false});
+LanguageSchema.set('toObject', { virtuals: true });
+LanguageSchema.set('toJSON', { virtuals: true });
 
 const ProjectSchema: Schema = new Schema({
   userId: {
@@ -39,7 +49,8 @@ const ProjectSchema: Schema = new Schema({
     type: Date,
     default: new Date
   },
-  currencies: [CurrencySchema]
+  currencies: [CurrencySchema],
+  languages: [LanguageSchema]
 });
 
 ProjectSchema.set('toObject', { virtuals: true });

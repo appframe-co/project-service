@@ -21,6 +21,7 @@ export type TProjectModel = {
   createdAt: Date;
   updatedAt: Date;
   currencies: {code:string, primary:boolean}[];
+  languages: {code:string, primary:boolean}[];
 }
 export type TCounterModel = {
   _id: string;
@@ -31,16 +32,19 @@ export type TProjectInput = {
   userId: string;
   name: string;
   currencies: {code:string, primary:boolean}[];
+  languages: {code:string, primary:boolean}[];
 }
 
 export type TProject = {
   id: string;
+  userId: string;
   name: string;
   projectNumber: number;
   plan: string;
   planFinishedAt: Date;
   trialFinishedAt: Date;
-  currencies: {code:string, primary:boolean}[];
+  currencies: {code:string, primary:boolean, name:string}[];
+  languages: {code:string, primary:boolean, name:string}[];
 }
 
 type TFeatureModel = {
@@ -62,4 +66,26 @@ export type TPlan = {
   code: string;
   features: TFeature[];
   default: boolean;
+}
+
+export type TLanguage = {
+  name: string;
+  code: string;
+  enabled:boolean;
+  sort: number;
+}
+
+export type TCurrency = {
+  name: string;
+  code: string;
+  enabled:boolean;
+  sort: number;
+  moneyFormat: string;
+  moneyInEmailsFormat: string;
+  moneyWithCurrencyFormat: string;
+  moneyWithCurrencyInEmailsFormat: string;
+  decimalMark: string;
+  subunitToUnit: number;
+  symbol: string;
+  thousandsSeparator: string;
 }
