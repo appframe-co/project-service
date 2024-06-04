@@ -6,9 +6,9 @@ type TPayload = {
     languages: TLanguage[];
 }
 
-export default async function ProjectController({userId, id}: {userId: string, id: string}, payload: TPayload): Promise<TErrorResponse | {project: TProject}> {
+export default async function ProjectController({id}: {id: string}, payload: TPayload): Promise<TErrorResponse | {project: TProject}> {
     try {
-        const project: TProject|null = await Project.findOne({_id: id, userId});
+        const project: TProject|null = await Project.findOne({_id: id});
         if (!project) {
             return {error: 'invalid_project'};
         }

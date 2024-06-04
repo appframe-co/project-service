@@ -97,15 +97,14 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
 router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const userId = req.query.userId as string;
-        if (!userId) {
-            throw new Error('UserId required');
-        }
+        // if (!userId) {
+        //     throw new Error('UserId required');
+        // }
 
         const {id} = req.params;
         const {currencies, languages} = res.locals;
 
         const data = await ProjectController({
-            userId,
             id
         }, {languages, currencies});
 
