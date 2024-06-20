@@ -81,11 +81,16 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
         const currencies = [{code: 'ILS', primary: true}];
         const languages = [{code: 'en', primary: true}];
 
+        const front = {
+            title: name
+        };
+
         const data = await NewProjectController({
             userId,
             name,
             currencies,
-            languages
+            languages,
+            front
         }, {languages: res.locals.languages, currencies: res.locals.currencies});
 
         res.json(data);
@@ -96,11 +101,6 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
 
 router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const userId = req.query.userId as string;
-        // if (!userId) {
-        //     throw new Error('UserId required');
-        // }
-
         const {id} = req.params;
         const {currencies, languages} = res.locals;
 
@@ -121,7 +121,7 @@ router.put('/:id', async (req: Request, res: Response, next: NextFunction) => {
             throw new Error('UserId required');
         }
 
-        let { id, name, currencies, languages } = req.body;
+        let { id, name, currencies, languages, front } = req.body;
 
         if (id !== req.params.id) {
             throw new Error('Project ID error');
@@ -132,7 +132,8 @@ router.put('/:id', async (req: Request, res: Response, next: NextFunction) => {
             id,
             name,
             currencies,
-            languages
+            languages,
+            front
         }, {languages: res.locals.languages, currencies: res.locals.currencies});
 
         res.json(data);

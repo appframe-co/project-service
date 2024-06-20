@@ -9,7 +9,7 @@ type TPayload = {
     languages: TLanguage[];
 }
 
-export default async function CreateProject({userId, name, currencies, languages}: TProjectInput, payload: TPayload): Promise<TErrorResponse | {project: TProject}> {
+export default async function CreateProject({userId, name, currencies, languages, front}: TProjectInput, payload: TPayload): Promise<TErrorResponse | {project: TProject}> {
     try {
         if (!name) {
             return {error: 'invalid_request'};
@@ -64,6 +64,9 @@ export default async function CreateProject({userId, name, currencies, languages
             trialFinishedAt: project.trialFinishedAt,
             currencies: currenciesOutput,
             languages: languagesOutput,
+            front: {
+                title: project.front.title
+            }
         };
 
         return {project: output};

@@ -23,6 +23,13 @@ const LanguageSchema = new Schema({
 LanguageSchema.set('toObject', { virtuals: true });
 LanguageSchema.set('toJSON', { virtuals: true });
 
+const FrontSchema = new Schema({
+  title: String, 
+  logo: String
+});
+FrontSchema.set('toObject', { virtuals: true });
+FrontSchema.set('toJSON', { virtuals: true });
+
 const ProjectSchema: Schema = new Schema({
   userId: {
     type: ObjectId,
@@ -50,7 +57,8 @@ const ProjectSchema: Schema = new Schema({
     default: new Date
   },
   currencies: [CurrencySchema],
-  languages: [LanguageSchema]
+  languages: [LanguageSchema],
+  front: FrontSchema
 });
 
 ProjectSchema.set('toObject', { virtuals: true });

@@ -49,6 +49,9 @@ export default async function Projects(
                 trialFinishedAt: project.trialFinishedAt,
                 currencies,
                 languages,
+                front: {
+                    title: project.front.title
+                }
             };
         });
 

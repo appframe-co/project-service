@@ -1,12 +1,12 @@
 import Project from '@/models/project.model'
-import {TCurrency, TErrorResponse, TLanguage, TProject} from '@/types/types'
+import {TCurrency, TErrorResponse, TFile, TLanguage, TProject} from '@/types/types'
 
 type TPayload = {
     currencies: TCurrency[];
     languages: TLanguage[];
 }
 
-export default async function ProjectController({id}: {id: string}, payload: TPayload): Promise<TErrorResponse | {project: TProject}> {
+export default async function ProjectController({id}: {id: string}, payload: TPayload): Promise<TErrorResponse | {project: TProject, files: TFile[]}> {
     try {
         const project: TProject|null = await Project.findOne({_id: id});
         if (!project) {
@@ -23,6 +23,15 @@ export default async function ProjectController({id}: {id: string}, payload: TPa
             name: payload.languages.find(lang => lang.code === l.code)?.name ?? 'unknown'
         }));
 
+        const resFetchFile = await fetch(
+            `${process.env.URL_FILE_SERVICE}/api/files/${project.front.logo}?projectId=${id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        const {file}: {file: TFile} = await resFetchFile.json();
+
         const output = {
             id: project.id,
             userId: project.userId,
@@ -32,10 +41,14 @@ export default async function ProjectController({id}: {id: string}, payload: TPa
             planFinishedAt: project.planFinishedAt,
             trialFinishedAt: project.trialFinishedAt,
             currencies,
-            languages
+            languages,
+            front: {
+                title: project.front.title,
+                logo: project.front.logo
+            }
         };
 
-        return {project: output};
+        return {project: output, files: file ? [file] : []};
     } catch (error) {
         throw error;
     }
